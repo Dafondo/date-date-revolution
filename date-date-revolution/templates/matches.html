@@ -14,13 +14,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     </head>
     <body>
-
-        <button type="button" id="start-btn">Start Recording!</button>
-        <a id="dl" href="#">file</a>
-        <a id="matches" href="/matches">matches</a>
-        <button type="button" id="send-btn">Send Dance!</button>
-        <canvas id="dance-canvas"></canvas>
-        <canvas id="match-canvas"></canvas>
-        <script src={{url_for('static', filename='js/main.js')}}></script>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-lg-4 col-lg-offset-4'>
+                    <h2 id='name'>First Last</h2>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-lg-6 col-lg-offset-3'>
+                    <img>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
