@@ -5,4 +5,7 @@ from flask import Flask
 app = Flask(__name__)
 
 # import all the other shit now
-from . import webview
+from . import webview, config
+
+# configure shit
+app.secret_key = config.secret_key
