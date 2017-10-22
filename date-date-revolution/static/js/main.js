@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var timelimit = + new Date();
+    var prevState = ;
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     // resize the canvas to fill browser window dynamically
@@ -16,7 +18,7 @@ $(document).ready(function() {
             img.addEventListener('load', function() {
                 ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
             }, false);
-            img.src = 'redd.png';
+            img.src = '/static/images/redd.png';
     }
 
     resizeCanvas();
@@ -37,6 +39,8 @@ $(document).ready(function() {
       // if (start) {
       //   start.style.display = "none";
       // }
+
+      // requestAnimationFrame(updateStatus);
     }
     
     function disconnecthandler(e) {
@@ -76,24 +80,24 @@ $(document).ready(function() {
     
           if (pressed) {
             if(i == 0) {
-              console.log("UP");
+              console.log(+ new Date() + " UP");
               // $('#arrow').css('transform','rotate(180deg)');
-              arr.src = "redu.png";
+              arr.src = "/static/images/redu.png";
             }
             else if(i == 3) {
-              console.log("RIGHT");
+              console.log+ new Date() + ("RIGHT");
               // $('#arrow').css('transform','rotate(270deg)');
-              arr.src = "redr.png";
+              arr.src = "/static/images/redr.png";
             }
             else if(i == 1) {
-              console.log("DOWN");
+              console.log(+ new Date() + "DOWN");
               // $('#arrow').css('transform','rotate(0deg)');
-              arr.src = "redd.png";
+              arr.src = "/static/images/redd.png";
             }
             else if(i == 2) {
-              console.log("LEFT");
+              console.log(+ new Date() + "LEFT");
               // $('#arrow').css('transform','rotate(90deg)');
-              arr.src = "redl.png";
+              arr.src = "/static/images/redl.png";
             }
             else {
               console.log("button " + i + ": button pressed");
@@ -101,8 +105,10 @@ $(document).ready(function() {
           }
         }
       }
-      window.clearInterval(pollDP);
-    }
+      if(+ new Date() < timelimit) {
+        requestAnimationFrame(updateStatus);
+      }
+    } 
     
     function scangamepads() {
       var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
@@ -124,5 +130,11 @@ $(document).ready(function() {
       setInterval(scangamepads, 500);
     }
 
-    var pollDP = window.setInterval(updateStatus(), 500);
+    function update() {
+      timelimit = + new Date() + 30000;
+      console.log(timelimit - 30000);
+      updateStatus();
+    }
+
+    $("#start-btn").on("click", update);
 });
