@@ -1,127 +1,107 @@
-var haveEvents = 'ongamepadconnected' in window;
-var controllers = {};
+$(document).ready(function() {
+  var canvas = document.getElementById('dance-canvas');
+  var ctx = canvas.getContext('2d');
 
-function connecthandler(e) {
-  addgamepad(e.gamepad);
-}
+  var haveEvents = 'ongamepadconnected' in window;
+  var controllers = {};
 
-function addgamepad(gamepad) {
-  controllers[gamepad.index] = gamepad;
-
-  var d = document.createElement("div");
-  d.setAttribute("id", "controller" + gamepad.index);
-
-  var t = document.createElement("h1");
-  t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
-  d.appendChild(t);
-
-  var b = document.createElement("div");
-  b.className = "buttons";
-  for (var i = 0; i < gamepad.buttons.length; i++) {
-    var e = document.createElement("span");
-    e.className = "button";
-    //e.id = "b" + i;
-    e.innerHTML = i;
-    b.appendChild(e);
+  function connecthandler(e) {
+    addgamepad(e.gamepad);
   }
 
-  d.appendChild(b);
+  function addgamepad(gamepad) {
+    controllers[gamepad.index] = gamepad;
 
-  var a = document.createElement("div");
-  a.className = "axes";
-
-  for (var i = 0; i < gamepad.axes.length; i++) {
-    var p = document.createElement("progress");
-    p.className = "axis";
-    //p.id = "a" + i;
-    p.setAttribute("max", "2");
-    p.setAttribute("value", "1");
-    p.innerHTML = i;
-    a.appendChild(p);
+    // // See https://github.com/luser/gamepadtest/blob/master/index.html
+    // var start = document.getElementById("start");
+    // if (start) {
+    //   start.style.display = "none";
+    // }
+    requestAnimationFrame(updateStatus);
   }
 
-  d.appendChild(a);
-
-  // See https://github.com/luser/gamepadtest/blob/master/index.html
-  var start = document.getElementById("start");
-  if (start) {
-    start.style.display = "none";
+  function disconnecthandler(e) {
+    removegamepad(e.gamepad);
   }
 
-  document.body.appendChild(d);
-  requestAnimationFrame(updateStatus);
-}
+  function removegamepad(gamepad) {
+    delete controllers[gamepad.index];
+  }
 
-function disconnecthandler(e) {
-  removegamepad(e.gamepad);
-}
+  function updateStatus() {
+    if (!haveEvents) {
+      scangamepads();
+    }
 
-function removegamepad(gamepad) {
-  var d = document.getElementById("controller" + gamepad.index);
-  document.body.removeChild(d);
-  delete controllers[gamepad.index];
-}
+    var i = 0;
+    var j;
 
-function updateStatus() {
+    for (j in controllers) {
+      var controller = controllers[j];
+
+      for (i = 0; i < controller.buttons.length; i++) {
+        var val = controller.buttons[i];
+        var pressed = val == 1.0;
+        if (typeof(val) == "object") {
+          pressed = val.pressed;
+          val = val.value;
+        }
+
+        var arrow = document.getElementById("arrow");
+
+        var arr = new Image();
+        arr.addEventListener('load', function() {
+          // ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(arr, canvas.width/2-240, canvas.height/2-240);
+        }, false);
+
+        if (pressed) {
+          if(i == 0) {
+            console.log("UP");
+            // $('#arrow').css('transform','rotate(180deg)');
+            arr.src = "/static/images/redu.png";
+          }
+          else if(i == 3) {
+            console.log("RIGHT");
+            // $('#arrow').css('transform','rotate(270deg)');
+            arr.src = "/static/images/redr.png";
+          }
+          else if(i == 1) {
+            console.log("DOWN");
+            // $('#arrow').css('transform','rotate(0deg)');
+            arr.src = "/static/images/redd.png";
+          }
+          else if(i == 2) {
+            console.log("LEFT");
+            // $('#arrow').css('transform','rotate(90deg)');
+            arr.src = "/static/images/redl.png";
+          }
+          else {
+            console.log("button " + i + ": button pressed");
+          } 
+        }
+      }
+    }
+    requestAnimationFrame(updateStatus);
+  }
+
+  function scangamepads() {
+    var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+    for (var i = 0; i < gamepads.length; i++) {
+      if (gamepads[i]) {
+        if (gamepads[i].index in controllers) {
+          controllers[gamepads[i].index] = gamepads[i];
+        } else {
+          addgamepad(gamepads[i]);
+        }
+      }
+    }
+  }
+
+  window.addEventListener("gamepadconnected", connecthandler);
+  window.addEventListener("gamepaddisconnected", disconnecthandler);
+
   if (!haveEvents) {
-    scangamepads();
+    setInterval(scangamepads, 500);
   }
-
-  var i = 0;
-  var j;
-
-  for (j in controllers) {
-    var controller = controllers[j];
-    var d = document.getElementById("controller" + j);
-    var buttons = d.getElementsByClassName("button");
-
-    for (i = 0; i < controller.buttons.length; i++) {
-      var b = buttons[i];
-      var val = controller.buttons[i];
-      var pressed = val == 1.0;
-      if (typeof(val) == "object") {
-        pressed = val.pressed;
-        val = val.value;
-      }
-
-      var pct = Math.round(val * 100) + "%";
-      b.style.backgroundSize = pct + " " + pct;
-
-      if (pressed) {
-        b.className = "button pressed";
-      } else {
-        b.className = "button";
-      }
-    }
-
-    var axes = d.getElementsByClassName("axis");
-    for (i = 0; i < controller.axes.length; i++) {
-      var a = axes[i];
-      a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
-      a.setAttribute("value", controller.axes[i] + 1);
-    }
-  }
-
-  requestAnimationFrame(updateStatus);
-}
-
-function scangamepads() {
-  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
-  for (var i = 0; i < gamepads.length; i++) {
-    if (gamepads[i]) {
-      if (gamepads[i].index in controllers) {
-        controllers[gamepads[i].index] = gamepads[i];
-      } else {
-        addgamepad(gamepads[i]);
-      }
-    }
-  }
-}
-
-
-window.addEventListener("gamepadconnected", connecthandler);
-window.addEventListener("gamepaddisconnected", disconnecthandler);
-
-if (!haveEvents) {
-  setInterval(scangamepads, 500);
-}
+});
