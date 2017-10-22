@@ -1,11 +1,16 @@
+certifi==2017.7.27.1
+chardet==3.0.4
 click==6.7
--e git+https://github.com/mlansari/date-date-revolution.git@3c05e59be5ebef5346b3e886e46d4b14b2474b76#egg=Date_Date_Revolution
+-e git+https://github.com/mlansari/date-date-revolution.git@dd6ce985e325a2134da2366ba5853dde7989b9db#egg=Date_Date_Revolution
 Flask==0.12.2
 Flask-Login==0.4.0
 Flask-OAuth==0.12
 httplib2==0.10.3
+idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
 MarkupSafe==1.0
 oauth2==1.9.0.post1
+requests==2.18.4
+urllib3==1.22
 Werkzeug==0.12.2
