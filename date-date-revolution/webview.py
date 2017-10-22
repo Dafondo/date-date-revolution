@@ -22,3 +22,7 @@ def index():
 @app.route("/ddr")
 def ddr():
 	return render_template("ddr.html", name = "", pic_url = "")
+
+@app.route("/matches")
+def ddr():
+	return render_template("matches.html", name = "", pic_url = "")
