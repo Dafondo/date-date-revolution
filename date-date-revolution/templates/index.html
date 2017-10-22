@@ -13,13 +13,51 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div class="site-wrapper">
-             
-        </div>
+        <fb:login-button 
+            scope="public_profile,email"
+            onlogin="checkLoginState();">
+        </fb:login-button>
         <button type="button" id="start-btn">Start</button>
         <a id="dl" href="#">file</a>
         <canvas id="dance-canvas"></canvas>
         <canvas id="match-canvas"></canvas>
         <script src={{url_for('static', filename='js/main.js')}}></script>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                appId      : '130602934361813',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v2.10'
+                });
+                
+                FB.AppEvents.logPageView();   
+                
+            };
+
+            function statusChangeCallback(response) {
+                console.log(response);
+                if(response.status != 'connected') FB.login;
+                else {
+                    id = response.authResponse.accessToken
+                    $.get('https://graph.facebook.com/me?fields=id,name,picture'
+                }
+            }
+
+            function checkLoginState() {
+                FB.getLoginStatus(function(response) {
+                    console.log(response);
+                    statusChangeCallback(response);
+                });
+            }
+            
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+        </script>
     </body>
 </html>

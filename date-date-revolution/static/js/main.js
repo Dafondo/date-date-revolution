@@ -9,6 +9,13 @@ $(document).ready(function() {
     var json = {
       data: []
     };
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
     // var mcanvas = document.getElementById('match-canvas');
     // var mctx = mcanvas.getContext('2d');
     // resize the canvas to fill browser window dynamically
