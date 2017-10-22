@@ -4,4 +4,8 @@ from . import app
 @app.route("/")
 def index():
     """Reached the homepage of the site"""
-    return render_template("index.html")
+    return render_template("login.html")
+
+@app.route("/ddr")
+def ddr():
+	return render_template("ddr.html", name = "", pic_url = "")
