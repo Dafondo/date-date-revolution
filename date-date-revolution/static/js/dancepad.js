@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var canvas = document.getElementById('canvas');
+  var canvas = document.getElementById('dance-canvas');
   var ctx = canvas.getContext('2d');
 
   var haveEvents = 'ongamepadconnected' in window;
