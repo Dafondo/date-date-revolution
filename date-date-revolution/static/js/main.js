@@ -96,14 +96,24 @@ $(document).ready(function() {
     
     function endDancing() {
       var jsonstr = JSON.stringify(json);
-      jsonURL = URL.createObjectURL(new Blob([jsonstr]));
+      var jsonURL = URL.createObjectURL(new Blob([jsonstr]));
       $("#dl").attr("href", jsonURL);
-      // $.ajax({
-      //     url : 'http://localhost:5000/post',
-      //     data: jsonstr,
-      //     type: 'POST'
-      // })
-      // $.post('localhost:5000/post');
+      $("#send-btn").text("SEND DANCE!");
+    }
+
+    function receiveMatch(response) {
+      $("#matches").attr('href', '/matches'+'?name=');
+    }
+
+    function sendDance() {
+      var jsonstr = JSON.stringify(json);
+      $.ajax({
+          url: '',
+          async: true,
+          data: jsonstr,
+          type: 'POST',
+          success: receiveMatch
+      })
     }
 
     function updateStatus() {
