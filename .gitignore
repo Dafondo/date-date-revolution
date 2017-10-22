@@ -2,3 +2,4 @@
 venv
 Date_Date_Revolution.egg-info
 date-date-revolution/__pycache__
+date-date-revolution/config.py
