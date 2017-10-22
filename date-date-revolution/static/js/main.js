@@ -1,10 +1,29 @@
 $(document).ready(function() {
     var timelimit = + new Date();
-    var prevState = ;
+    var prevState = [0, 0, 0, 0, 0, 0, 0];
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', resizeCanvas, false);
+
+    function loadImages(arr) {
+      this.images = {};
+      var loadedImageCount = 0;
+  
+      // Make sure arr is actually an array and any other error checking
+      for (var i = 0; i < arr.length; i++){
+          var img = new Image();
+          img.onload = imageLoaded;
+          img.src = arr[i];
+          this.images[arr[i]] = img;
+      }
+  
+      function imageLoaded(e) {
+          loadedImageCount++;
+      }
+    }
+
+    var loader = loadImages(['/static/images/redu.png', '/static/images/redr.png', '/static/images/redd.png', '/static/images/redl.png', '/static/images/redul.png', '/static/images/redur.png']);
 
     function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -72,36 +91,68 @@ $(document).ready(function() {
     
           var arrow = document.getElementById("arrow");
     
-          var arr = new Image();
-          arr.addEventListener('load', function() {
-            // ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(arr, canvas.width/2-240, canvas.height/2-240);
-          }, false);
-    
-          if (pressed) {
+          if (pressed && prevState[i] == 0) {
             if(i == 0) {
-              console.log(+ new Date() + " UP");
-              // $('#arrow').css('transform','rotate(180deg)');
-              arr.src = "/static/images/redu.png";
+              console.log(+ new Date() + " 0");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redu.png";
             }
             else if(i == 3) {
-              console.log+ new Date() + ("RIGHT");
-              // $('#arrow').css('transform','rotate(270deg)');
-              arr.src = "/static/images/redr.png";
+              console.log(+ new Date() + " 1");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redr.png";
             }
             else if(i == 1) {
-              console.log(+ new Date() + "DOWN");
-              // $('#arrow').css('transform','rotate(0deg)');
-              arr.src = "/static/images/redd.png";
+              console.log(+ new Date() + " 2");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redd.png";
             }
             else if(i == 2) {
-              console.log(+ new Date() + "LEFT");
-              // $('#arrow').css('transform','rotate(90deg)');
-              arr.src = "/static/images/redl.png";
+              console.log(+ new Date() + " 3");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redl.png";
+            }
+            else if(i == 6) {
+              console.log(+ new Date() + " 4");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redul.png";
+            }
+            else if(i == 7) {
+              console.log(+ new Date() + " 5");
+              var img = new Image();
+              img.addEventListener('load', function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, canvas.width/2-240, canvas.height/2-240);
+              }, false);
+              img.src = "/static/images/redur.png";
             }
             else {
               console.log("button " + i + ": button pressed");
             } 
+            prevState[i] = 1;
+          }
+          else {
+            prevState[i] = 0;
           }
         }
       }
