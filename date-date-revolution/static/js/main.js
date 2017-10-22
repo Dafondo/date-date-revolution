@@ -1,10 +1,14 @@
 $(document).ready(function() {
+    var duration = 10000;
     var dancing = false;
     var timelimit = + new Date();
     var timeoffset = + new Date();
     var prevState = [];
     var canvas = document.getElementById('dance-canvas');
     var ctx = canvas.getContext('2d');
+    var json = {
+      data: []
+    };
     // var mcanvas = document.getElementById('match-canvas');
     // var mctx = mcanvas.getContext('2d');
     // resize the canvas to fill browser window dynamically
@@ -74,6 +78,18 @@ $(document).ready(function() {
       delete controllers[gamepad.index];
     }
     
+    function endDancing() {
+      var jsonstr = JSON.stringify(json);
+      jsonURL = URL.createObjectURL(new Blob([jsonstr]));
+      $("#dl").attr("href", jsonURL);
+      // $.ajax({
+      //     url : 'http://localhost:5000/post',
+      //     data: jsonstr,
+      //     type: 'POST'
+      // })
+      // $.post('localhost:5000/post');
+    }
+
     function updateStatus() {
       dancing = true;
       if (!haveEvents) {
@@ -102,6 +118,7 @@ $(document).ready(function() {
             prevState[i] = 1;
             if(i == 0) {
               console.log(timerec + " 0 1");
+              json.data.push({time: timerec, button: 0, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -111,6 +128,7 @@ $(document).ready(function() {
             }
             else if(i == 3) {
               console.log(timerec + " 1 1");
+              json.data.push({time: timerec, button: 1, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -120,6 +138,7 @@ $(document).ready(function() {
             }
             else if(i == 1) {
               console.log(timerec + " 2 1");
+              json.data.push({time: timerec, button: 2, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -129,6 +148,7 @@ $(document).ready(function() {
             }
             else if(i == 2) {
               console.log(timerec + " 3 1");
+              json.data.push({time: timerec, button: 3, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -138,6 +158,7 @@ $(document).ready(function() {
             }
             else if(i == 6) {
               console.log(timerec + " 4 1");
+              json.data.push({time: timerec, button: 4, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -147,6 +168,7 @@ $(document).ready(function() {
             }
             else if(i == 7) {
               console.log(timerec + " 5 1");
+              json.data.push({time: timerec, button: 5, state: 1});
               var img = new Image();
               img.addEventListener('load', function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -154,29 +176,35 @@ $(document).ready(function() {
               }, false);
               img.src = "/static/images/redur.png";
             }
-            else {
-              console.log("button " + i + ": button pressed");
-            } 
+            // else {
+            //   console.log("button " + i + ": button pressed");
+            // } 
           }
           else if(!pressed && prevState[i] != 0) {
             prevState[i] = 0;
             if(i == 0) {
               console.log(timerec + " 0 0");
+              json.data.push({time: timerec, button: 0, state: 0});
             }
             else if(i == 3) {
               console.log(timerec + " 1 0");
+              json.data.push({time: timerec, button: 1, state: 0});
             }
             else if(i == 1) {
               console.log(timerec + " 2 0");
+              json.data.push({time: timerec, button: 2, state: 0});
             }
             else if(i == 2) {
               console.log(timerec + " 3 0");
+              json.data.push({time: timerec, button: 3, state: 0});
             }
             else if(i == 6) {
               console.log(timerec + " 4 0");
+              json.data.push({time: timerec, button: 4, state: 0});
             }
             else if(i == 7) {
               console.log(timerec + " 5 0");
+              json.data.push({time: timerec, button: 5, state: 0});
             }
             // else {
             //   console.log("button " + i + ": button not pressed");
@@ -187,7 +215,10 @@ $(document).ready(function() {
       if(+ new Date() < timelimit) {
         requestAnimationFrame(updateStatus);
       }
-      else dancing = false;
+      else {
+        dancing = false;
+        endDancing();
+      }
     } 
     
     function scangamepads() {
@@ -211,8 +242,10 @@ $(document).ready(function() {
     }
 
     function scanstart() {
-      if(controllers[0].buttons[9].pressed) {
-        update();
+      if(controllers[0]) {
+        if(controllers[0].buttons[9].pressed) {
+          update();
+        }
       }
     }
 
@@ -221,8 +254,8 @@ $(document).ready(function() {
     }
 
     function update() {
-      timelimit = + new Date() + 30000;
-      timeoffset = timelimit - 30000;
+      timelimit = + new Date() + duration;
+      timeoffset = timelimit - duration;
       console.log(0);
       updateStatus();
     }
