@@ -7,8 +7,17 @@ $(document).ready(function() {
     var canvas = document.getElementById('dance-canvas');
     var ctx = canvas.getContext('2d');
     var json = {
+      id: -1,
+      name: '',
       data: []
     };
+
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+    var name = url.searchParams.get("name");
+    json.id = id;
+    json.name = name;
 
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
