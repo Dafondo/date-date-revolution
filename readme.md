@@ -7,3 +7,4 @@ To set this up for development, do the following:
 6) run the following command: ```export FLASK_APP=date-date-revolution```
 7) When you want to test, simply run ```flask run``` (ensure that it's done from that directory)
 8) voila
+9) Dance to Shake It Off (Taylor Swift) or Magnolia (Playboi Carti)
