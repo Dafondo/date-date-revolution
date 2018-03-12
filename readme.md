@@ -1,4 +1,7 @@
-To set this up for development, do the following:
+# Date Date Revolution
+### Matchmaking based on AI and dancing paterns
+
+# To set this up for development, do the following:
 1) cd into the top directory ```cd date-date-revolution```
 2) create a virtual environment in this directory with ```virtualenv venv```
 3) Activate the virtual environment ```source venv/bin/activate```
