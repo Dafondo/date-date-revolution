@@ -11,3 +11,6 @@
 7) When you want to test, simply run ```flask run``` (ensure that it's done from that directory)
 8) voila
 9) Dance to Shake It Off (Taylor Swift) or Magnolia (Playboi Carti)
+
+### Video Results
+- https://youtu.be/IPi1YVkF1iM
