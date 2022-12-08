@@ -1,4 +1,4 @@
-certifi==2017.7.27.1
+certifi==2022.12.7
 chardet==3.0.4
 click==6.7
 -e git+https://github.com/mlansari/date-date-revolution.git@dd6ce985e325a2134da2366ba5853dde7989b9db#egg=Date_Date_Revolution
